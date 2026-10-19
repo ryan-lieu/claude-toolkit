@@ -1,42 +1,76 @@
-# Shared Claude Code toolkit for Ryan, Connor and Manav.
-# Columns:  type  name  platform  group  source...
-#   type      skills  clone the repo, link its skill folders into ~/.claude/skills (all, or only=a,b,c)
-#             plugin  add the marketplace (source = owner/repo) and install name@marketplace, user scope
-#             mcp     claude mcp add -s user <name> -- <source...>
-#             cli     source = brew:<pkg> | uv:<pkg>
-#   platform  all | mac | mac-arm (Apple Silicon). Cloud sessions are Linux, so they get "all" only.
-#   group     core = everyone, every project. study = Ryan's research/notes tools (install.sh --with study).
-# Skills we wrote ourselves (no outside repo) live in skills/ here and are always linked.
-# Inventory taken from Connor's Mac on 2026-10-19 (set up from Ryan's toolkit zip).
+# Shared Claude Code toolkit for Ryan, Connor and Manav. One line per tool.
+#
+# Columns:  type  name  platform  group  source  [path=...] [ref=...]
+#   type      skills  a skill from a git repo (or from skills/ here when source = local); linked into ~/.claude/skills/<name>
+#             plugin  name = plugin@marketplace, source = the marketplace's GitHub repo; installed at user scope
+#             mcp     MCP server; source = the command line it runs (claude mcp add -s user <name> -- <source>)
+#             cli     command-line tool; source = one or more of brew:<formula> cask:<cask> apt:<pkg> dnf:<pkg>
+#                     uv:<pypi spec> release:<owner/repo> watch:<pkg> joined by "|"; the first that works here is used
+#   platform  all | mac | mac-arm (Apple Silicon only). Cloud sessions are Linux and get "all" only.
+#   group     core  = everyone, always
+#             study = research and statistics skills (install.sh --with study)
+#             heavy = multi-GB installs (install.sh --with heavy)
+#   path=     folder of the skill inside the repo (default: repo root)
+#   ref=      commit, tag or branch to pin (default: the repo's default branch, updated on every run).
+#             Every line from the same repo must use the same ref.
+#
+# Inventory taken from Connor's Mac and Ryan's Mac (2026-10-19), sources checked against Ryan's provenance register.
+# Account-level things (claude.ai connectors, plugins synced from claude.ai) follow the shared login and are not listed.
 
-# --- video: watching, editing, making ---
-plugin  watch@claude-watch                 all      core   taoufik123-collab/claude-watch
-skills  herk-edit-kit                      all      core   https://github.com/nateherkai/herk-edit-kit
-skills  claude-shorts                      all      core   https://github.com/AgriciDaniel/claude-shorts
-skills  remotion                           all      core   https://github.com/remotion-dev/skills
-skills  manim-skill                        all      core   https://github.com/Yusuke710/manim-skill
-
-# --- research and skills discovery ---
-plugin  last30days@last30days-skill        all      core   mvanhorn/last30days-skill
-skills  find-skills                        all      core   https://github.com/vercel-labs/skills
-
-# --- design and motion (Emil Kowalski) ---
-skills  emil-skills                        all      core   https://github.com/emilkowalski/skills
-
-# --- workflow and Claude Code ---
-plugin  superpowers@claude-plugins-official           all  core  anthropics/claude-plugins-official
-plugin  claude-md-management@claude-plugins-official  all  core  anthropics/claude-plugins-official
-mcp     playwright                         all      core   npx -y @playwright/mcp@latest
-
-# --- command-line tools ---
-cli     ffmpeg                             mac      core   brew:ffmpeg
-cli     node                               mac      core   brew:node
+# --- command-line tools (first, so later steps can use them) ---
+cli     node                               all      core   brew:node|apt:nodejs|dnf:nodejs
+cli     ffmpeg                             all      core   brew:ffmpeg|apt:ffmpeg|dnf:ffmpeg
 cli     yt-dlp                             all      core   uv:yt-dlp
 cli     scenedetect                        all      core   uv:scenedetect[opencv]
-cli     auto-editor                        all      core   uv:auto-editor
+cli     auto-editor                        all      core   brew:auto-editor|release:WyattBlue/auto-editor
 cli     parakeet-mlx                       mac-arm  core   uv:parakeet-mlx
 
-# --- study, notes and science (Ryan) ---
-plugin  obsidian@obsidian-skills           all      study  kepano/obsidian-skills
-skills  scientific-agent-skills            all      study  https://github.com/K-Dense-AI/scientific-agent-skills  only=citation-management,paper-lookup,peer-review,scientific-writing,scikit-survival,statistical-analysis,statistical-power,statsmodels
-mcp     anki                               mac      study  npx -y @ankimcp/anki-mcp-server --stdio
+# --- plugins ---
+plugin  watch@claude-video                            all  core  bradautomates/claude-video
+plugin  last30days@last30days-skill                   all  core  mvanhorn/last30days-skill
+plugin  superpowers@claude-plugins-official           all  core  anthropics/claude-plugins-official
+plugin  claude-md-management@claude-plugins-official  all  core  anthropics/claude-plugins-official
+
+# --- MCP servers ---
+mcp     playwright                         all      core   npx -y @playwright/mcp@latest
+
+# --- our own skills (skills/ in this repo) ---
+skills  video-to-skill                     all      core   local  path=skills/video-to-skill
+
+# --- video skills ---
+skills  shorts                             all      core   https://github.com/AgriciDaniel/claude-shorts  ref=a369fad
+skills  remotion-best-practices            all      core   https://github.com/remotion-dev/skills  path=skills/remotion-best-practices  ref=1441a11
+skills  manim-skill                        all      core   https://github.com/Yusuke710/manim-skill  path=skills/manim-skill  ref=a0048d9
+
+# --- skills discovery ---
+skills  find-skills                        all      core   https://github.com/vercel-labs/skills  path=skills/find-skills
+
+# --- design and motion (Emil Kowalski) ---
+skills  animate                            all      core   https://github.com/emilkowalski/skills  path=skills/animate  ref=e8a175d
+skills  animate-expo                       all      core   https://github.com/emilkowalski/skills  path=skills/animate-expo  ref=e8a175d
+skills  animation-vocabulary               all      core   https://github.com/emilkowalski/skills  path=skills/animation-vocabulary  ref=e8a175d
+skills  apple-design                       all      core   https://github.com/emilkowalski/skills  path=skills/apple-design  ref=e8a175d
+skills  ask-sonner                         all      core   https://github.com/emilkowalski/skills  path=skills/ask-sonner  ref=e8a175d
+skills  break-ui                           all      core   https://github.com/emilkowalski/skills  path=skills/break-ui  ref=e8a175d
+skills  emil-design-eng                    all      core   https://github.com/emilkowalski/skills  path=skills/emil-design-eng  ref=e8a175d
+skills  find-animation-opportunities       all      core   https://github.com/emilkowalski/skills  path=skills/find-animation-opportunities  ref=e8a175d
+skills  improve-animations                 all      core   https://github.com/emilkowalski/skills  path=skills/improve-animations  ref=e8a175d
+skills  mobile-native                      all      core   https://github.com/emilkowalski/skills  path=skills/mobile-native  ref=e8a175d
+skills  pick-ui-library                    all      core   https://github.com/emilkowalski/skills  path=skills/pick-ui-library  ref=e8a175d
+skills  prototype                          all      core   https://github.com/emilkowalski/skills  path=skills/prototype  ref=e8a175d
+skills  review-animations                  all      core   https://github.com/emilkowalski/skills  path=skills/review-animations  ref=e8a175d
+skills  write-swift                        all      core   https://github.com/emilkowalski/skills  path=skills/write-swift  ref=e8a175d
+
+# --- research and statistics (K-Dense, 8 of 177) ---
+skills  citation-management                all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/citation-management
+skills  paper-lookup                       all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/paper-lookup
+skills  peer-review                        all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/peer-review
+skills  scientific-writing                 all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/scientific-writing
+skills  scikit-survival                    all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/scikit-survival
+skills  statistical-analysis               all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/statistical-analysis
+skills  statistical-power                  all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/statistical-power
+skills  statsmodels                        all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/statsmodels
+
+# --- heavy installs (install.sh --with heavy). After the plugins: whisperx is installed by the watch plugin's setup ---
+cli     whisperx                           all      heavy  watch:whisperx==3.8.6
+cli     mactex                             mac      heavy  cask:mactex-no-gui
