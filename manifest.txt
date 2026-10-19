@@ -1,0 +1,42 @@
+# Shared Claude Code toolkit for Ryan, Connor and Manav.
+# Columns:  type  name  platform  group  source...
+#   type      skills  clone the repo, link its skill folders into ~/.claude/skills (all, or only=a,b,c)
+#             plugin  add the marketplace (source = owner/repo) and install name@marketplace, user scope
+#             mcp     claude mcp add -s user <name> -- <source...>
+#             cli     source = brew:<pkg> | uv:<pkg>
+#   platform  all | mac | mac-arm (Apple Silicon). Cloud sessions are Linux, so they get "all" only.
+#   group     core = everyone, every project. study = Ryan's research/notes tools (install.sh --with study).
+# Skills we wrote ourselves (no outside repo) live in skills/ here and are always linked.
+# Inventory taken from Connor's Mac on 2026-10-19 (set up from Ryan's toolkit zip).
+
+# --- video: watching, editing, making ---
+plugin  watch@claude-watch                 all      core   taoufik123-collab/claude-watch
+skills  herk-edit-kit                      all      core   https://github.com/nateherkai/herk-edit-kit
+skills  claude-shorts                      all      core   https://github.com/AgriciDaniel/claude-shorts
+skills  remotion                           all      core   https://github.com/remotion-dev/skills
+skills  manim-skill                        all      core   https://github.com/Yusuke710/manim-skill
+
+# --- research and skills discovery ---
+plugin  last30days@last30days-skill        all      core   mvanhorn/last30days-skill
+skills  find-skills                        all      core   https://github.com/vercel-labs/skills
+
+# --- design and motion (Emil Kowalski) ---
+skills  emil-skills                        all      core   https://github.com/emilkowalski/skills
+
+# --- workflow and Claude Code ---
+plugin  superpowers@claude-plugins-official           all  core  anthropics/claude-plugins-official
+plugin  claude-md-management@claude-plugins-official  all  core  anthropics/claude-plugins-official
+mcp     playwright                         all      core   npx -y @playwright/mcp@latest
+
+# --- command-line tools ---
+cli     ffmpeg                             mac      core   brew:ffmpeg
+cli     node                               mac      core   brew:node
+cli     yt-dlp                             all      core   uv:yt-dlp
+cli     scenedetect                        all      core   uv:scenedetect[opencv]
+cli     auto-editor                        all      core   uv:auto-editor
+cli     parakeet-mlx                       mac-arm  core   uv:parakeet-mlx
+
+# --- study, notes and science (Ryan) ---
+plugin  obsidian@obsidian-skills           all      study  kepano/obsidian-skills
+skills  scientific-agent-skills            all      study  https://github.com/K-Dense-AI/scientific-agent-skills  only=citation-management,paper-lookup,peer-review,scientific-writing,scikit-survival,statistical-analysis,statistical-power,statsmodels
+mcp     anki                               mac      study  npx -y @ankimcp/anki-mcp-server --stdio
