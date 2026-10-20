@@ -24,12 +24,14 @@ cli     yt-dlp                             all      core   uv:yt-dlp
 cli     scenedetect                        all      core   uv:scenedetect[opencv]
 cli     auto-editor                        all      core   brew:auto-editor|release:WyattBlue/auto-editor
 cli     parakeet-mlx                       mac-arm  core   uv:parakeet-mlx
+cli     youtubeuploader                    mac      core   brew:youtubeuploader
 
 # --- plugins ---
 plugin  watch@claude-video                            all  core  bradautomates/claude-video
 plugin  last30days@last30days-skill                   all  core  mvanhorn/last30days-skill
 plugin  superpowers@claude-plugins-official           all  core  anthropics/claude-plugins-official
 plugin  claude-md-management@claude-plugins-official  all  core  anthropics/claude-plugins-official
+plugin  youtube-agent@youtube-agent-skill             all  core  Jakeschincariol/youtube-agent-skill
 
 # --- MCP servers ---
 mcp     playwright                         all      core   npx -y @playwright/mcp@latest
@@ -60,6 +62,17 @@ skills  pick-ui-library                    all      core   https://github.com/em
 skills  prototype                          all      core   https://github.com/emilkowalski/skills  path=skills/prototype  ref=e8a175d
 skills  review-animations                  all      core   https://github.com/emilkowalski/skills  path=skills/review-animations  ref=e8a175d
 skills  write-swift                        all      core   https://github.com/emilkowalski/skills  path=skills/write-swift  ref=e8a175d
+
+# --- voiceover (ElevenLabs, official; need ELEVENLABS_API_KEY in your shell profile) ---
+skills  text-to-speech                     all      core   https://github.com/elevenlabs/skills  path=text-to-speech  ref=269e5f0
+skills  sound-effects                      all      core   https://github.com/elevenlabs/skills  path=sound-effects  ref=269e5f0
+skills  music                              all      core   https://github.com/elevenlabs/skills  path=music  ref=269e5f0
+skills  setup-api-key                      all      core   https://github.com/elevenlabs/skills  path=setup-api-key  ref=269e5f0
+
+# --- character animation (OpenMontage; repo is AGPL-3.0, these skill files say MIT; we use the Remotion parts) ---
+skills  character-rigging                  all      core   https://github.com/calesthio/OpenMontage  path=.agents/skills/character-rigging  ref=c806645
+skills  svg-character-animation            all      core   https://github.com/calesthio/OpenMontage  path=.agents/skills/svg-character-animation  ref=c806645
+skills  character-animation-qa             all      core   https://github.com/calesthio/OpenMontage  path=.agents/skills/character-animation-qa  ref=c806645
 
 # --- research and statistics (K-Dense, 8 of 177) ---
 skills  citation-management                all      study  https://github.com/K-Dense-AI/scientific-agent-skills  path=skills/citation-management
