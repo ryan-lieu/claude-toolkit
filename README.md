@@ -4,15 +4,26 @@ The Claude Code skills, plugins, MCP servers and command-line tools that Ryan, C
 project. One list (`manifest.txt`), one installer (`install.sh`), the same setup on every Mac and in every cloud
 session.
 
-## Install
-```bash
-git clone https://github.com/ryan-lieu/claude-toolkit ~/Projects/claude-toolkit
-cd ~/Projects/claude-toolkit
-bash install.sh --dry-run       # see what it would do; changes nothing
-bash install.sh                 # core tools
-```
-Needs `git` and Claude Code (signed in). On a Mac, also Homebrew (https://brew.sh). The installer adds `uv` and
-Python 3.12 itself if they're missing. Restart Claude Code afterwards so it picks up new skills and plugins.
+## Install on a new Mac
+1. **Homebrew.** Open Terminal and check with `brew --version`. If it isn't there, paste the one-line command from
+   https://brew.sh and type your Mac password when asked. Installing Homebrew also installs `git`.
+2. **Claude Code.** Install it from https://code.claude.com, then run `claude` once and sign in.
+3. **Get the toolkit.** The repo is public, so you don't need a GitHub login for this:
+   ```bash
+   git clone https://github.com/ryan-lieu/claude-toolkit ~/Projects/claude-toolkit
+   cd ~/Projects/claude-toolkit
+   ```
+4. **Preview, then install:**
+   ```bash
+   ./install.sh --dry-run          # see what it would do; changes nothing
+   ./install.sh                    # core tools; about 5-15 minutes the first time
+   ```
+   If some of these skills are already on your Mac (copied from Ryan's old toolkit zip), they show up as `SKIP`. Run
+   `./install.sh --adopt` to let the toolkit manage them; your old copies are moved to `~/.claude/skills-replaced/`.
+5. **Restart Claude Code.** Type `/` and the new skills and commands appear in the list.
+
+Every line of output says `OK`, `INSTALL`, `UPDATE`, `ADOPT`, `REMOVE`, `SKIP` or `FAIL`. For a `FAIL`, read the log
+named at the end, fix the cause, and run it again; it's safe to re-run. The installer adds `uv` and Python 3.12 itself.
 
 Optional groups:
 ```bash
@@ -60,6 +71,9 @@ Cloud sessions are Linux, so `mac` and `mac-arm` entries (parakeet-mlx, MacTeX) 
 from apt/dnf, and auto-editor from its GitHub release.
 
 ## Add a tool
+You need write access to this repo; Ryan adds collaborators in the repo's GitHub settings. Without it, ask Ryan to
+add the line.
+
 1. Add one line to `manifest.txt` (the format is at the top of the file). Give a skill from someone else's repo its
    real repo URL plus `path=` and, ideally, `ref=<commit>`. For a skill we wrote ourselves, copy its folder into
    `skills/` and use `local path=skills/<name>`.

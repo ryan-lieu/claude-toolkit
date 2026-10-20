@@ -129,7 +129,8 @@ do_skill() {
       ADOPT)   report ADOPT "$name" "would move the hand-installed copy to $(short "$replaced") and link $(short "$target")${dir:+ @ $at}" ;;
       UPDATE)  if [ -z "$dir" ]; then report OK "$name" "linked to this repo"
                elif [ -n "$ref" ] && [[ "$before" == "$ref"* || "$ref" == "$before"* ]]; then report OK "$name" "pinned @ $ref"
-               else report UPDATE "$name" "would update ${before:-?} -> $at"; fi ;;
+               elif [ -z "$ref" ]; then report OK "$name" "@ ${before:-?}, unpinned; would pull the latest"
+               else report UPDATE "$name" "would move ${before:-?} -> $ref"; fi ;;
     esac
     return
   fi
