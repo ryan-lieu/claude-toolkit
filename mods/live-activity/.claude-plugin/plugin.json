@@ -1,0 +1,7 @@
+{
+  "name": "live-activity",
+  "version": "0.1.0",
+  "description": "Spinner shows this turn's tool calls and subagents; the status line keeps a one-line summary of the last turn",
+  "author": { "name": "claude-toolkit (Ryan Lieu)" },
+  "license": "MIT"
+}

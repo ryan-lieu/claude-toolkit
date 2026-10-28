@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install or update everything in manifest.txt on this Mac or Linux machine. Safe to re-run.
 #   bash install.sh                  core tools
-#   bash install.sh --with study     core + a group (study, heavy); repeat --with for more
+#   bash install.sh --with study     core + a group (study, heavy, mods); repeat --with for more
 #   bash install.sh --dry-run        show what would happen, change nothing (--check does the same)
 #   bash install.sh --adopt          replace same-named skills that were installed by hand
 #                                    (the old copy is moved to ~/.claude/skills-replaced/, not deleted)
@@ -164,13 +164,14 @@ do_plugin() {
   fi
   other="$(grep -Eo "[[:space:]]$plug@[^[:space:]]+" <<<"$plugins_now" | grep -v '@synced$' | head -1 | tr -d '[:space:]')"
   [ -n "$other" ] && { report SKIP "$name" "a different '$plug' plugin is installed ($other); left alone"; return; }
-  [ $dry = 1 ] && { report INSTALL "$name" "would add marketplace $source and install"; return; }
+  local from="$source"; [ "$source" = local ] && from="$here"   # local = this repo's own marketplace (mods/)
+  [ $dry = 1 ] && { report INSTALL "$name" "would add marketplace $(short "$from") and install"; return; }
   if ! grep -Eq "[[:space:]]$mkt\$" <<<"$mkts_now"; then
-    run claude plugin marketplace add "$source" || { report FAIL "$name" "could not add marketplace $source (see $log)"; return; }
+    run claude plugin marketplace add "$from" || { report FAIL "$name" "could not add marketplace $from (see $log)"; return; }
     mkts_now="$mkts_now
  $mkt"
   fi
-  if run claude plugin install -s user "$name"; then report INSTALL "$name" "from $source"
+  if run claude plugin install -s user "$name"; then report INSTALL "$name" "from $(short "$from")"
   else report FAIL "$name" "install failed (see $log)"; fi
 }
 do_mcp() {
@@ -181,6 +182,22 @@ do_mcp() {
   # shellcheck disable=SC2086
   if run claude mcp add -s user "$name" -- $cmd; then report INSTALL "$name" "$cmd"
   else report FAIL "$name" "claude mcp add failed (see $log)"; fi
+}
+
+# ---------------------------------------------------------------- status line
+do_statusline() {  # sets ~/.claude/settings.json statusLine to this repo's script, only if none is set
+  local settings="$HOME/.claude/settings.json" script="$here/$path" cmd cur
+  has node || { report FAIL "$name" "needs node (core group)"; return; }
+  [ -f "$script" ] || { report FAIL "$name" "no script at $(short "$script")"; return; }
+  cmd="node \"$script\""
+  cur="$(node -e 'try{const s=require(process.argv[1]);process.stdout.write((s.statusLine&&s.statusLine.command)||"")}catch{}' "$settings")"
+  if [ "$cur" = "$cmd" ]; then report OK "$name" "status line set"; return; fi
+  [ -n "$cur" ] && { report SKIP "$name" "you already have a status line ($cur); left alone"; return; }
+  [ $dry = 1 ] && { report INSTALL "$name" "would set statusLine in $(short "$settings")"; return; }
+  mkdir -p "$HOME/.claude"
+  if node -e 'const fs=require("fs"),f=process.argv[1];let s={};try{s=JSON.parse(fs.readFileSync(f,"utf8"))}catch(e){if(fs.existsSync(f))process.exit(3)}s.statusLine={type:"command",command:process.argv[2],padding:0};fs.writeFileSync(f,JSON.stringify(s,null,2)+"\n")' "$settings" "$cmd"
+  then report INSTALL "$name" "statusLine -> $(short "$script")"
+  else report FAIL "$name" "could not edit $(short "$settings") (not valid JSON?); left unchanged"; fi
 }
 
 # ---------------------------------------------------------------- CLI tools
@@ -301,7 +318,7 @@ while read -r type name platform group source extra <&3; do
   fi
   if [ "$type" != "$section" ]; then
     section="$type"; echo
-    case "$type" in skills) echo "Skills (~/.claude/skills)" ;; plugin) echo "Plugins" ;; mcp) echo "MCP servers" ;; cli) echo "CLI tools" ;; esac
+    case "$type" in skills) echo "Skills (~/.claude/skills)" ;; plugin) echo "Plugins" ;; mcp) echo "MCP servers" ;; cli) echo "CLI tools" ;; statusline) echo "Status line" ;; esac
   fi
   platform_ok "$platform" || { report SKIP "$name" "$platform only"; continue; }
   path="."; ref=""
@@ -311,6 +328,7 @@ while read -r type name platform group source extra <&3; do
     plugin) do_plugin ;;
     mcp)    do_mcp ;;
     cli)    do_cli ;;
+    statusline) do_statusline ;;
     *)      report FAIL "$name" "unknown type '$type' in manifest.txt" ;;
   esac
 done 3<"$here/manifest.txt"

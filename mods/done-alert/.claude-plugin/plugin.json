@@ -1,0 +1,7 @@
+{
+  "name": "done-alert",
+  "version": "0.1.0",
+  "description": "Notification and a chime when a long turn finishes, or when Claude needs a permission or an answer from you; /alerts to tune",
+  "author": { "name": "claude-toolkit (Ryan Lieu)" },
+  "license": "MIT"
+}

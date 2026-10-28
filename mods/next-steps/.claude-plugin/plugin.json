@@ -1,0 +1,7 @@
+{
+  "name": "next-steps",
+  "version": "0.1.0",
+  "description": "After each answer, three suggested follow-ups as buttons above the prompt (one small Haiku call per turn); /nextsteps on|off",
+  "author": { "name": "claude-toolkit (Ryan Lieu)" },
+  "license": "MIT"
+}

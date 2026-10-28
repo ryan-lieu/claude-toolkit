@@ -29,8 +29,29 @@ Optional groups:
 ```bash
 bash install.sh --with study    # K-Dense research and statistics skills
 bash install.sh --with heavy    # WhisperX for /watch (~3 GB) and MacTeX for manim maths (~5 GB, asks for your password)
+bash install.sh --with mods     # Claude Code mods and a status line (opt-in; see Mods below)
 bash install.sh shorts mactex   # only the named entries, whatever their group
 ```
+
+## Mods (opt-in: `--with mods`)
+
+[Mods](https://code.claude.com/docs/en/plugins/mods) are plugins whose code runs inside Claude Code (v2.1.287+): they can draw bands and panes, restyle the spinner, and rewrite tool calls. **They run with your full user permissions**, so nobody gets them unless they ask for the group. This repo is their marketplace (`.claude-plugin/marketplace.json`), installed from your local clone, so `git pull` then `/reload-plugins` updates them.
+
+| Mod | What it does | Costs usage? | Source |
+|---|---|---|---|
+| `token-weather` | Context-window forecast band above the prompt | No | Anthropic sample, patched to stack with other bands |
+| `cache-keeper` | Prompt-cache countdown; asks before a cold-cache send rewrites a big context; `/keepwarm`, `/board`, `/handoff` | Only `/keepwarm` pings | Nate Herk (MIT) |
+| `flightdeck` | `/flightdeck` side pane: context, cost, permission decisions, subagents | No | Stephen Casella (MIT) |
+| `blast-radius` | Holds `rm -r`, force-push, `git reset --hard`, `git clean` and shows what they'd hit; Proceed / Cancel | No | Anthropic sample |
+| `replay-theater` | `/replay` steps through the last turn's file edits | No | Anthropic sample |
+| `model-router` | Explore/lookup subagents → Haiku, general-purpose → Sonnet, unless Claude named a model. `/router` to see counts or change rules | Saves | this repo |
+| `live-activity` | Spinner shows tool calls and subagents this turn; status entry summarises the last turn | No | this repo |
+| `next-steps` | Three suggested follow-ups as buttons after each answer; press fills the prompt, never sends. `/nextsteps off` | One Haiku call per answer | this repo |
+| `done-alert` | Notification + chime when a turn of 30 s+ ends, or Claude needs permission / asks a question. `/alerts` | No | this repo |
+
+Also in the group: `statusline/statusline.mjs` (model · context % · 5h/7d plan usage · git branch · folder). It is set only if you have no status line already.
+
+Turn one off: `/plugin` → Installed → disable it. All of them for one session: `claude --safe-mode`. Vendored mods are pinned copies: each folder's `PROVENANCE.md` says where it came from, the commit, and anything changed. Before adding another, run `claude plugin validate <folder>` and read every `$.process`, `$.http`, `$.fs`, `$.env` and `$.model` call.
 
 ## Update
 ```bash

@@ -4,12 +4,14 @@
 #   type      skills  a skill from a git repo (or from skills/ here when source = local); linked into ~/.claude/skills/<name>
 #             plugin  name = plugin@marketplace, source = the marketplace's GitHub repo; installed at user scope
 #             mcp     MCP server; source = the command line it runs (claude mcp add -s user <name> -- <source>)
+#             statusline  sets statusLine in ~/.claude/settings.json to path= in this repo (never replaces one you have)
 #             cli     command-line tool; source = one or more of brew:<formula> cask:<cask> apt:<pkg> dnf:<pkg>
 #                     uv:<pypi spec> release:<owner/repo> watch:<pkg> joined by "|"; the first that works here is used
 #   platform  all | mac | mac-arm (Apple Silicon only). Cloud sessions are Linux and get "all" only.
 #   group     core  = everyone, always
 #             study = research and statistics skills (install.sh --with study)
 #             heavy = multi-GB installs (install.sh --with heavy)
+#             mods  = Claude Code mods and the status line (install.sh --with mods)
 #   path=     folder of the skill inside the repo (default: repo root)
 #   ref=      commit, tag or branch to pin (default: the repo's default branch, updated on every run).
 #             Every line from the same repo must use the same ref.
@@ -87,3 +89,16 @@ skills  statsmodels                        all      study  https://github.com/K-
 # --- heavy installs (install.sh --with heavy). After the plugins: whisperx is installed by the watch plugin's setup ---
 cli     whisperx                           all      heavy  watch:whisperx==3.8.6
 cli     mactex                             mac      heavy  cask:mactex-no-gui
+
+# --- Claude Code mods (install.sh --with mods). Marketplace = this repo (.claude-plugin/marketplace.json, mods/).
+#     Read from the local clone, so `git pull` + /reload-plugins updates them. Vetted 2026-10-28; see mods/*/PROVENANCE.md ---
+plugin  token-weather@claude-toolkit      all  mods  local
+plugin  cache-keeper@claude-toolkit       all  mods  local
+plugin  flightdeck@claude-toolkit         all  mods  local
+plugin  blast-radius@claude-toolkit       all  mods  local
+plugin  replay-theater@claude-toolkit     all  mods  local
+plugin  model-router@claude-toolkit       all  mods  local
+plugin  live-activity@claude-toolkit      all  mods  local
+plugin  next-steps@claude-toolkit         all  mods  local
+plugin  done-alert@claude-toolkit         all  mods  local
+statusline  toolkit-statusline            all  mods  local  path=statusline/statusline.mjs

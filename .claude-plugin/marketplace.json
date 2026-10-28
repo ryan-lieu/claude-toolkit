@@ -1,0 +1,16 @@
+{
+  "name": "claude-toolkit",
+  "owner": { "name": "Ryan Lieu" },
+  "metadata": { "description": "Claude Code mods for Ryan, Connor and Manav. Five vetted from their authors (pinned copies, see each PROVENANCE.md) and four written here." },
+  "plugins": [
+    { "name": "token-weather",  "source": "./mods/token-weather",  "description": "Context-window forecast above the prompt (Anthropic sample; patched to stack with other bands)" },
+    { "name": "cache-keeper",   "source": "./mods/cache-keeper",   "description": "Prompt-cache timer, cold-cache warning, /keepwarm, /board, /handoff (Nate Herk)" },
+    { "name": "flightdeck",     "source": "./mods/flightdeck",     "description": "Read-only side pane: context, cost, permissions, subagents (Stephen Casella)" },
+    { "name": "blast-radius",   "source": "./mods/blast-radius",   "description": "Holds rm -r, force-push, git reset and shows what they'd hit (Anthropic sample)" },
+    { "name": "replay-theater", "source": "./mods/replay-theater", "description": "/replay steps through the last turn's file edits (Anthropic sample)" },
+    { "name": "model-router",   "source": "./mods/model-router",   "description": "Lookup subagents to Haiku, general subagents to Sonnet; /router" },
+    { "name": "live-activity",  "source": "./mods/live-activity",  "description": "Tool and subagent counts in the spinner; last-turn summary" },
+    { "name": "next-steps",     "source": "./mods/next-steps",     "description": "Three suggested follow-ups as buttons after each answer; /nextsteps" },
+    { "name": "done-alert",     "source": "./mods/done-alert",     "description": "Notification + chime when a long turn ends or Claude needs you; /alerts" }
+  ]
+}
