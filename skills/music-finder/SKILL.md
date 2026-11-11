@@ -39,7 +39,8 @@ anonymous use is rate-limited, so search a few times, not dozens).
    ```
    earshot rank "a short cheerful musical jingle that ends a video, no voice" "<folder>"/*.mp3
    ```
-   Drop anything it calls "no match" or that "sounds most like" speech, and pass on its order. Report its own words
+   Drop only what "sounds most like" speech; pass everything else on in its order. Its "no match" isn't reliable
+   enough to cut on: on 11 Nov a listener liked one it had called "no match". Report its own words
    ("sounds most like a ukulele"), not your opinion of the sound. About 30 s per call while it loads its models.
 6. **People listen and pick.** Then log only the winner: `music_finder.py license <id>` prints the attribution text
    for a CC BY credit and a ready line for a licence table (`| Track | Artist | Source | Licence | Mood | Date |
