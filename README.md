@@ -28,7 +28,7 @@ named at the end, fix the cause, and run it again; it's safe to re-run. The inst
 Optional groups:
 ```bash
 bash install.sh --with study    # K-Dense research and statistics skills
-bash install.sh --with heavy    # WhisperX for /watch (~3 GB) and MacTeX for manim maths (~5 GB, asks for your password)
+bash install.sh --with heavy    # WhisperX for /watch (~3 GB), MacTeX for manim maths (~5 GB, asks for your password), earshot (then `earshot doctor --fetch`, ~1.1 GB)
 bash install.sh --with mods     # Claude Code mods and a status line (opt-in; see Mods below)
 bash install.sh shorts mactex   # only the named entries, whatever their group
 ```

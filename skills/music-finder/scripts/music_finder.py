@@ -138,8 +138,8 @@ def get(a):
     os.makedirs(out, exist_ok=True)
     existing = len([f for f in os.listdir(out) if f.endswith(".json")])
     rows = []
-    for k, ref in enumerate(a.refs, existing + 1):
-        r = resolve(ref)
+    picked = [resolve(ref) for ref in a.refs]  # check every number before downloading anything
+    for k, r in enumerate(picked, existing + 1):
         if r.get("license") not in SAFE_LICENSES:
             print(f"SKIP {r.get('title')}: licence {r.get('license')} isn't safe for a monetised channel.")
             continue

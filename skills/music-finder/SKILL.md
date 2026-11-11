@@ -33,7 +33,15 @@ anonymous use is rate-limited, so search a few times, not dozens).
    ```
    Each track gets a number, a `.json` with its licence and attribution, and a line in `index.md`. These are the
    source's preview files (often MP3); for the final mix, download the original from the track's page.
-5. **People listen and pick.** Then log only the winner: `music_finder.py license <id>` prints the attribution text
+5. **Optional: let Earshot pre-sort** (if `earshot` is installed: `install.sh --with heavy`, then
+   `earshot doctor --fetch` once). It compares the audio itself with a description, so it catches what the tags miss
+   (on 11 Nov it flagged a "jingle" that was a man shouting):
+   ```
+   earshot rank "a short cheerful musical jingle that ends a video, no voice" "<folder>"/*.mp3
+   ```
+   Drop anything it calls "no match" or that "sounds most like" speech, and pass on its order. Report its own words
+   ("sounds most like a ukulele"), not your opinion of the sound. About 30 s per call while it loads its models.
+6. **People listen and pick.** Then log only the winner: `music_finder.py license <id>` prints the attribution text
    for a CC BY credit and a ready line for a licence table (`| Track | Artist | Source | Licence | Mood | Date |
    Used in |`).
 

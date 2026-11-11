@@ -91,6 +91,8 @@ skills  statsmodels                        all      study  https://github.com/K-
 # --- heavy installs (install.sh --with heavy). After the plugins: whisperx is installed by the watch plugin's setup ---
 cli     whisperx                           all      heavy  watch:whisperx==3.8.6
 cli     mactex                             mac      heavy  cask:mactex-no-gui
+# earshot: Claude's ears (describe, match, rank sounds against a description). Models (~1.1 GB) come with `earshot doctor --fetch`
+cli     earshot                            all      heavy  uv:earshot[mcp]@git+https://github.com/Leonxlnx/earshot@v0.4.0
 
 # --- Claude Code mods (install.sh --with mods). Marketplace = this repo (.claude-plugin/marketplace.json, mods/).
 #     Read from the local clone, so `git pull` + /reload-plugins updates them. Vetted 2026-10-28; see mods/*/PROVENANCE.md ---
