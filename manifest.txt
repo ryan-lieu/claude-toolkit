@@ -40,6 +40,7 @@ mcp     playwright                         all      core   npx -y @playwright/mc
 
 # --- our own skills (skills/ in this repo) ---
 skills  video-to-skill                     all      core   local  path=skills/video-to-skill
+skills  music-finder                       all      core   local  path=skills/music-finder
 
 # --- video skills ---
 skills  shorts                             all      core   https://github.com/AgriciDaniel/claude-shorts  ref=a369fad
